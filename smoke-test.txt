@@ -1,0 +1,1 @@
+vae_approx|taesd_decoder.pth|https://github.com/madebyollin/taesd/raw/main/taesd_decoder.pth
