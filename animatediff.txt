@@ -1,0 +1,12 @@
+# AnimateDiff model pack
+# Custom nodes need to be installed separately (see animatediff-nodes)
+ipadapter|ip-adapter-plus_sd15.safetensors|https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter-plus_sd15.safetensors
+clip_vision|CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors|https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors
+animatediff_models|mm_sd15_v3.safetensors|https://huggingface.co/conrevo/AnimateDiff-A1111/resolve/main/motion_module/mm_sd15_v3.safetensors
+loras|AnimateLCM_sd15_t2v_lora.safetensors|https://huggingface.co/wangfuyun/AnimateLCM/resolve/main/AnimateLCM_sd15_t2v_lora.safetensors
+diffusion_models|dreamshaper-8-unet-fp16.safetensors|https://huggingface.co/Lykon/dreamshaper-8/resolve/main/unet/diffusion_pytorch_model.safetensors
+text_encoders|dreamshaper-8-clip-l-fp16.safetensors|https://huggingface.co/Lykon/dreamshaper-8/resolve/main/text_encoder/model.safetensors
+vae|dreamshaper-8-vae-fp16.safetensors|https://huggingface.co/Lykon/dreamshaper-8/resolve/main/vae/diffusion_pytorch_model.safetensors
+upscale_models|4x-UltraSharp.pth|https://huggingface.co/lokCX/4x-Ultrasharp/resolve/main/4x-UltraSharp.pth
+workflows|animatediff-clean.json|https://raw.githubusercontent.com/ExNihilis/comfyui-model-packs/main/workflows/animatediff-clean.json
+workflows|AnimateDiff-LCM-Experiments.json|https://raw.githubusercontent.com/ExNihilis/comfyui-model-packs/main/workflows/AnimateDiff-LCM-Experiments.json
