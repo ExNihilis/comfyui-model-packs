@@ -8,8 +8,8 @@ diffusion_models|dreamshaper-8-unet-fp16.safetensors|https://huggingface.co/Lyko
 text_encoders|dreamshaper-8-clip-l-fp16.safetensors|https://huggingface.co/Lykon/dreamshaper-8/resolve/main/text_encoder/model.safetensors
 vae|dreamshaper-8-vae-fp16.safetensors|https://huggingface.co/Lykon/dreamshaper-8/resolve/main/vae/diffusion_pytorch_model.safetensors
 upscale_models|4x-UltraSharp.pth|https://huggingface.co/lokCX/4x-Ultrasharp/resolve/main/4x-UltraSharp.pth
-workflows|animatediff-clean.json|https://raw.githubusercontent.com/ExNihilis/comfyui-model-packs/main/workflows/animatediff-clean.json
-workflows|AnimateDiff-LCM-Experiments.json|https://raw.githubusercontent.com/ExNihilis/comfyui-model-packs/main/workflows/AnimateDiff-LCM-Experiments.json
+workflows|animatediff-clean.json|https://raw.githubusercontent.com/ExNihilis/comfyui-model-packs/main/animatediff/workflows/animatediff-clean.json
+workflows|AnimateDiff-LCM-Experiments.json|https://raw.githubusercontent.com/ExNihilis/comfyui-model-packs/main/animatediff/workflows/AnimateDiff-LCM-Experiments.json
 
 # Custom nodes
 nodes|-|https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
