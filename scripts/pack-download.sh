@@ -5,6 +5,7 @@
 set -e
 
 LOG_FILE="/workspace/pack-download.log"
+mkdir -p "$(dirname "$LOG_FILE")"
 exec > >(tee -a "$LOG_FILE") 2>&1
 
 echo "[$(date)] Starting pack download..."
@@ -15,21 +16,31 @@ WORKFLOWS_DIR="$COMFYUI_DIR/user/default/workflows"
 CUSTOM_NODES_DIR="$COMFYUI_DIR/custom_nodes"
 PACKS_BASE_URL="${PACKS_BASE_URL:-https://raw.githubusercontent.com/ExNihilis/comfyui-model-packs/main}"
 
-# Wait for ComfyUI to be set up
-echo "[$(date)] Waiting for ComfyUI installation..."
-for i in $(seq 1 120); do
-  if [ -d "$COMFYUI_DIR" ] && [ -d "$MODELS_DIR" ]; then
-    break
+# 1. Break the deadlock: Initialize ComfyUI workspace if it hasn't been created yet
+echo "[$(date)] Checking ComfyUI workspace installation..."
+if [ ! -d "$COMFYUI_DIR" ]; then
+  if [ -d "/opt/comfyui-baked" ]; then
+    echo "[$(date)] ComfyUI directory missing. Initializing from baked bundle (/opt/comfyui-baked)..."
+    mkdir -p "$(dirname "$COMFYUI_DIR")"
+    cp -r /opt/comfyui-baked "$COMFYUI_DIR"
+    echo "[$(date)] Workspace initialized successfully."
+  else
+    echo "[$(date)] WARNING: /opt/comfyui-baked not found. Waiting for official start script to populate workspace..."
+    for i in $(seq 1 120); do
+      if [ -d "$COMFYUI_DIR" ] && [ -d "$MODELS_DIR" ]; then
+        break
+      fi
+      sleep 5
+    done
   fi
-  sleep 5
-done
+fi
 
 if [ ! -d "$COMFYUI_DIR" ]; then
   echo "[$(date)] ERROR: ComfyUI directory never appeared at $COMFYUI_DIR"
   exit 1
 fi
 
-# Ensure directories exist
+# Ensure required directories exist
 mkdir -p "$MODELS_DIR"
 mkdir -p "$WORKFLOWS_DIR"
 mkdir -p "$CUSTOM_NODES_DIR"
@@ -96,12 +107,7 @@ for pack in "${PACKS[@]}"; do
       cd "$CUSTOM_NODES_DIR" || continue
       node_name=$(basename "$url" .git)
       node_name=$(echo "$node_name" | sed 's/\.git$//')
-      # If filename is specified and different, maybe use it as node name? Or use from URL
-      if [ -n "$filename" ] && [ "$filename" != "-" ] && [ "$filename" != "$node_name" ]; then
-        # Try to use filename as hint, but better to derive from URL
-        :
-      fi
-      node_name=$(basename "$url" .git)
+      
       if [ -d "$CUSTOM_NODES_DIR/$node_name" ]; then
         echo "[$(date)] UPDATE $node_name (git pull)"
         old_head=$(git -C "$node_name" rev-parse HEAD 2>/dev/null || echo "")
@@ -122,6 +128,7 @@ for pack in "${PACKS[@]}"; do
           continue
         fi
       fi
+      
       # Install requirements if they exist
       if [ -f "$CUSTOM_NODES_DIR/$node_name/requirements.txt" ]; then
         echo "[$(date)] PIP    Installing requirements for $node_name"
@@ -153,13 +160,13 @@ for pack in "${PACKS[@]}"; do
       if [ -n "${HF_TOKEN:-}" ]; then
         auth=(-H "Authorization: Bearer $HF_TOKEN")
       else
-        echo "[$(date)] WARNING: HuggingFace URL detected but HF_TOKEN not set (may fail for gated models)"
+        echo "[$(date)] WARNING: HuggingFace URL detected but HF_TOKEN not set"
       fi
     elif [[ "$url" == *civitai.com/* ]]; then
       if [ -n "${CIVITAI_TOKEN:-}" ]; then
         auth=(-H "Authorization: Bearer $CIVITAI_TOKEN")
       else
-        echo "[$(date)] WARNING: CivitAI URL detected but CIVITAI_TOKEN not set (may fail for gated/restricted models)"
+        echo "[$(date)] WARNING: CivitAI URL detected but CIVITAI_TOKEN not set"
       fi
     fi
     
@@ -179,13 +186,11 @@ done
 # If nodes were changed, try to restart ComfyUI if it's running
 if [ "$NODES_CHANGED" = "1" ]; then
   echo "[$(date)] Custom nodes changed. Attempting to reload via ComfyUI Manager if available..."
-  # Try ComfyUI Manager reboot endpoint first (safer)
   if curl -s --connect-timeout 3 -X POST "http://127.0.0.1:8188/manager/reboot" >/dev/null 2>&1; then
     echo "[$(date)] Requested ComfyUI restart via Manager API"
     sleep 15
   else
-    echo "[$(date)] Manager API not available. Custom nodes installed - ComfyUI may need a restart to load them."
-    echo "[$(date)] You can restart the pod or refresh after ComfyUI is back up."
+    echo "[$(date)] Manager API not available. Custom nodes installed."
   fi
 fi
 
