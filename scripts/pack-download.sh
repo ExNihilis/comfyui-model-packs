@@ -20,18 +20,13 @@ PACKS_BASE_URL="${PACKS_BASE_URL:-https://raw.githubusercontent.com/ExNihilis/co
 echo "[$(date)] Checking ComfyUI workspace installation..."
 if [ ! -d "$COMFYUI_DIR" ]; then
   if [ -d "/opt/comfyui-baked" ]; then
-    echo "[$(date)] ComfyUI directory missing. Initializing from baked bundle (/opt/comfyui-baked)..."
+    echo "[$(date)] First time setup: Initializing workspace from baked bundle..."
     mkdir -p "$(dirname "$COMFYUI_DIR")"
     cp -r /opt/comfyui-baked "$COMFYUI_DIR"
     echo "[$(date)] Workspace initialized successfully."
   else
-    echo "[$(date)] WARNING: /opt/comfyui-baked not found. Waiting for official start script to populate workspace..."
-    for i in $(seq 1 120); do
-      if [ -d "$COMFYUI_DIR" ] && [ -d "$MODELS_DIR" ]; then
-        break
-      fi
-      sleep 5
-    done
+    echo "[$(date)][FATAL] Neither $COMFYUI_DIR nor /opt/comfyui-baked found!" >&2
+    exit 1
   fi
 fi
 
