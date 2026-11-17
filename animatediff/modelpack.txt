@@ -4,12 +4,9 @@ ipadapter|ip-adapter-plus_sd15.safetensors|https://huggingface.co/h94/IP-Adapter
 clip_vision|CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors|https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors
 animatediff_models|mm_sd15_v3.safetensors|https://huggingface.co/conrevo/AnimateDiff-A1111/resolve/main/motion_module/mm_sd15_v3.safetensors
 loras|AnimateLCM_sd15_t2v_lora.safetensors|https://huggingface.co/wangfuyun/AnimateLCM/resolve/main/AnimateLCM_sd15_t2v_lora.safetensors
-diffusion_models|dreamshaper-8-unet-fp16.safetensors|https://huggingface.co/Lykon/dreamshaper-8/resolve/main/unet/diffusion_pytorch_model.safetensors
-text_encoders|dreamshaper-8-clip-l-fp16.safetensors|https://huggingface.co/Lykon/dreamshaper-8/resolve/main/text_encoder/model.safetensors
-vae|dreamshaper-8-vae-fp16.safetensors|https://huggingface.co/Lykon/dreamshaper-8/resolve/main/vae/diffusion_pytorch_model.safetensors
+checkpoints|DreamShaper8_LCM.safetensors|https://huggingface.co/Lykon/dreamshaper-8-lcm/resolve/main/DreamShaper8_LCM.safetensors
 upscale_models|4x-UltraSharp.pth|https://huggingface.co/lokCX/4x-Ultrasharp/resolve/main/4x-UltraSharp.pth
 workflows|Kreatour-AnimatedDiff-t2i_512_768_rife-upscale.json|https://raw.githubusercontent.com/ExNihilis/comfyui-model-packs/main/animatediff/workflows/Kreatour-AnimatedDiff-t2i_512_768_rife-upscale.json
-
 
 # Custom nodes
 nodes|-|https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
